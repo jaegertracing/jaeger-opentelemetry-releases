@@ -21,7 +21,7 @@ import (
 )
 
 var (
-	ImagePrefixes = []string{"otel", "ghcr.io/open-telemetry/opentelemetry-collector-releases"}
+	ImagePrefixes = []string{"ghcr.io/jaegertracing/jaeger-opentelemetry-poc"}
 
 	distsFlag = flag.String("d", "", "Collector distributions(s) to build, comma-separated")
 )
