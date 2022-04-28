@@ -1,0 +1,128 @@
+project_name: opentelemetry-collector-releases
+builds:
+- id: jaegerotelcol
+  goos:
+  - darwin
+  - linux
+  - windows
+  goarch:
+  - "386"
+  - amd64
+  - arm64
+  ignore:
+  - goos: darwin
+    goarch: "386"
+  - goos: windows
+    goarch: arm64
+  dir: distributions/jaegerotelcol/_build
+  ldflags:
+  - -s
+  - -w
+  flags:
+  - -trimpath
+  binary: jaegerotelcol
+  env:
+  - CGO_ENABLED=0
+archives:
+- id: jaegerotelcol
+  builds:
+  - jaegerotelcol
+  name_template: '{{ .Binary }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{
+    .Arm }}{{ end }}{{ if .Mips }}_{{ .Mips }}{{ end }}'
+nfpms:
+- package_name: jaegerotelcol
+  contents:
+  - src: distributions/jaegerotelcol/jaegerotelcol.service
+    dst: /lib/systemd/system/jaegerotelcol.service
+  - src: distributions/jaegerotelcol/jaegerotelcol.conf
+    dst: /etc/jaegerotelcol/jaegerotelcol.conf
+    type: config|noreplace
+  - src: configs/jaegerotelcol.yaml
+    dst: /etc/jaegerotelcol/config.yaml
+    type: config
+  scripts:
+    preinstall: distributions/jaegerotelcol/preinstall.sh
+    postinstall: distributions/jaegerotelcol/postinstall.sh
+    preremove: distributions/jaegerotelcol/preremove.sh
+  id: jaegerotelcol
+  builds:
+  - jaegerotelcol
+  formats:
+  - apk
+  - deb
+  - rpm
+  maintainer: The OpenTelemetry Collector maintainers <cncf-opentelemetry-maintainers@lists.cncf.io>
+  description: OpenTelemetry Collector - jaegerotelcol
+  license: Apache 2.0
+checksum:
+  name_template: '{{ .ProjectName }}_checksums.txt'
+dockers:
+- goos: linux
+  goarch: "386"
+  dockerfile: distributions/jaegerotelcol/Dockerfile
+  image_templates:
+  - otel/jaegeropentelemetry-collector:{{ .Version }}-386
+  - ghcr.io/open-telemetry/opentelemetry-collector-releases/jaegeropentelemetry-collector:{{
+    .Version }}-386
+  extra_files:
+  - configs/jaegerotelcol.yaml
+  build_flag_templates:
+  - --pull
+  - --platform=linux/386
+  - --label=org.opencontainers.image.created={{.Date}}
+  - --label=org.opencontainers.image.name={{.ProjectName}}
+  - --label=org.opencontainers.image.revision={{.FullCommit}}
+  - --label=org.opencontainers.image.version={{.Version}}
+  - --label=org.opencontainers.image.source={{.GitURL}}
+  use: buildx
+- goos: linux
+  goarch: amd64
+  dockerfile: distributions/jaegerotelcol/Dockerfile
+  image_templates:
+  - otel/jaegeropentelemetry-collector:{{ .Version }}-amd64
+  - ghcr.io/open-telemetry/opentelemetry-collector-releases/jaegeropentelemetry-collector:{{
+    .Version }}-amd64
+  extra_files:
+  - configs/jaegerotelcol.yaml
+  build_flag_templates:
+  - --pull
+  - --platform=linux/amd64
+  - --label=org.opencontainers.image.created={{.Date}}
+  - --label=org.opencontainers.image.name={{.ProjectName}}
+  - --label=org.opencontainers.image.revision={{.FullCommit}}
+  - --label=org.opencontainers.image.version={{.Version}}
+  - --label=org.opencontainers.image.source={{.GitURL}}
+  use: buildx
+- goos: linux
+  goarch: arm64
+  dockerfile: distributions/jaegerotelcol/Dockerfile
+  image_templates:
+  - otel/jaegeropentelemetry-collector:{{ .Version }}-arm64
+  - ghcr.io/open-telemetry/opentelemetry-collector-releases/jaegeropentelemetry-collector:{{
+    .Version }}-arm64
+  extra_files:
+  - configs/jaegerotelcol.yaml
+  build_flag_templates:
+  - --pull
+  - --platform=linux/arm64
+  - --label=org.opencontainers.image.created={{.Date}}
+  - --label=org.opencontainers.image.name={{.ProjectName}}
+  - --label=org.opencontainers.image.revision={{.FullCommit}}
+  - --label=org.opencontainers.image.version={{.Version}}
+  - --label=org.opencontainers.image.source={{.GitURL}}
+  use: buildx
+docker_manifests:
+- name_template: otel/jaegeropentelemetry-collector:{{ .Version }}
+  image_templates:
+  - otel/jaegeropentelemetry-collector:{{ .Version }}-386
+  - otel/jaegeropentelemetry-collector:{{ .Version }}-amd64
+  - otel/jaegeropentelemetry-collector:{{ .Version }}-arm64
+- name_template: ghcr.io/open-telemetry/opentelemetry-collector-releases/jaegeropentelemetry-collector:{{
+    .Version }}
+  image_templates:
+  - ghcr.io/open-telemetry/opentelemetry-collector-releases/jaegeropentelemetry-collector:{{
+    .Version }}-386
+  - ghcr.io/open-telemetry/opentelemetry-collector-releases/jaegeropentelemetry-collector:{{
+    .Version }}-amd64
+  - ghcr.io/open-telemetry/opentelemetry-collector-releases/jaegeropentelemetry-collector:{{
+    .Version }}-arm64
