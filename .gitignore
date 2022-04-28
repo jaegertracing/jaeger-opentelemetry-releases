@@ -3,3 +3,4 @@ dist/
 .idea
 .generated-yaml/
 distributions/jaegerotelcol/_build/jaegerotelcol
+distributions/jaegerotelcol/_build/build.log
