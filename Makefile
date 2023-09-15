@@ -4,6 +4,7 @@ GORELEASER ?= goreleaser
 OTELCOL_BUILDER_VERSION ?= 0.85.0
 OTELCOL_BUILDER_DIR ?= ${HOME}/bin
 OTELCOL_BUILDER ?= ${OTELCOL_BUILDER_DIR}/ocb
+OTELCOL_BUILDER_BASE_URL = "https://github.com/open-telemetry/opentelemetry-collector/releases/download/cmd%2Fbuilder%2F"
 
 DISTRIBUTIONS ?= "jaegerotelcol"
 
@@ -28,7 +29,7 @@ ensure-goreleaser-up-to-date: generate-goreleaser
 	@git diff -s --exit-code .goreleaser.yaml || (echo "Build failed: The goreleaser templates have changed but the .goreleaser.yaml hasn't. Run 'make generate-goreleaser' and update your PR." && exit 1)
 
 .PHONY: ocb
-ocb:
+ocb: ocb-version
 ifeq (, $(shell command -v ocb 2>/dev/null))
 	@{ \
 	[ ! -x '$(OTELCOL_BUILDER)' ] || exit 0; \
@@ -39,12 +40,16 @@ ifeq (, $(shell command -v ocb 2>/dev/null))
 	[ "$${machine}" != x86_64 ] || machine=amd64 ;\
 	echo "Installing ocb ($${os}/$${machine}) at $(OTELCOL_BUILDER_DIR)";\
 	mkdir -p $(OTELCOL_BUILDER_DIR) ;\
-	curl -sLo $(OTELCOL_BUILDER) "https://github.com/open-telemetry/opentelemetry-collector/releases/download/v$(OTELCOL_BUILDER_VERSION)/ocb_$(OTELCOL_BUILDER_VERSION)_$${os}_$${machine}" ;\
+	curl -sLo $(OTELCOL_BUILDER) "${OTELCOL_BUILDER_BASE_URL}v$(OTELCOL_BUILDER_VERSION)/ocb_$(OTELCOL_BUILDER_VERSION)_$${os}_$${machine}" ;\
 	chmod +x $(OTELCOL_BUILDER) ;\
 	}
 else
 OTELCOL_BUILDER=$(shell command -v ocb)
 endif
+
+.PHONY: ocb-version
+ocb-version:
+	@$(OTELCOL_BUILDER) version
 
 .PHONY: go
 go:
