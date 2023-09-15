@@ -29,7 +29,7 @@ ensure-goreleaser-up-to-date: generate-goreleaser
 	@git diff -s --exit-code .goreleaser.yaml || (echo "Build failed: The goreleaser templates have changed but the .goreleaser.yaml hasn't. Run 'make generate-goreleaser' and update your PR." && exit 1)
 
 .PHONY: ocb
-ocb: ocb-version
+ocb:
 ifeq (, $(shell command -v ocb 2>/dev/null))
 	@{ \
 	[ ! -x '$(OTELCOL_BUILDER)' ] || exit 0; \
