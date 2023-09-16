@@ -1,20 +1,6 @@
 name: Continuous Integration - GoReleaser
 
-on:
-  push:
-    branches: [main]
-    paths:
-    - "go.mod"
-    - ".goreleaser.yaml"
-    - "distributions/jaegerotelcol/manifest.yaml"
-    - "goreleaser/*"
-  pull_request:
-    branches: [main]
-    paths:
-    - "go.mod"
-    - ".goreleaser.yaml"
-    - "distributions/jaegerotelcol/manifest.yaml"
-    - "goreleaser/*"
+on: [push, pull_request]
 
 concurrency:
   group: ${{ github.workflow }}-${{ (github.event.pull_request && github.event.pull_request.number) || github.ref || github.run_id }}
