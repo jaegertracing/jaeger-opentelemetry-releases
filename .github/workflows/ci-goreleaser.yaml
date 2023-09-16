@@ -4,13 +4,21 @@ on:
   push:
     branches: [main]
     paths:
+    - "go.mod"
     - ".goreleaser.yaml"
     - "distributions/jaegerotelcol/manifest.yaml"
+    - "goreleaser/*"
   pull_request:
     branches: [main]
     paths:
+    - "go.mod"
     - ".goreleaser.yaml"
     - "distributions/jaegerotelcol/manifest.yaml"
+    - "goreleaser/*"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ (github.event.pull_request && github.event.pull_request.number) || github.ref || github.run_id }}
+  cancel-in-progress: true
 
 jobs:
   check-goreleaser:
@@ -18,22 +26,22 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Set up QEMU
         id: qemu
-        uses: docker/setup-qemu-action@v1
+        uses: docker/setup-qemu-action@v3
         with:
           platforms: arm64
 
       - name: Set up Docker Buildx
         id: buildx
-        uses: docker/setup-buildx-action@v1
+        uses: docker/setup-buildx-action@v3
 
       - name: Set up Go
-        uses: actions/setup-go@v2
+        uses: actions/setup-go@v4
         with:
           go-version: "1.21"
 
