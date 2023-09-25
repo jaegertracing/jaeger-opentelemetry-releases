@@ -3,18 +3,21 @@ module github.com/open-telemetry/opentelemetry-collector-releases
 go 1.20
 
 require (
-	github.com/goreleaser/goreleaser v1.2.5
-	github.com/goreleaser/nfpm/v2 v2.11.3
+	github.com/goreleaser/goreleaser v1.21.0
+	github.com/goreleaser/nfpm/v2 v2.33.1
 	gopkg.in/yaml.v2 v2.4.0
 )
 
 require (
-	github.com/alecthomas/jsonschema v0.0.0-20211209230136-e2b41affa5c1 // indirect
-	github.com/apex/log v1.9.0 // indirect
+	github.com/bahlo/generic-list-go v0.2.0 // indirect
+	github.com/buger/jsonparser v1.1.1 // indirect
 	github.com/gobwas/glob v0.2.3 // indirect
 	github.com/goreleaser/fileglob v1.3.0 // indirect
-	github.com/iancoleman/orderedmap v0.2.0 // indirect
-	github.com/pkg/errors v0.9.1 // indirect
-	github.com/stretchr/testify v1.8.4 // indirect
+	github.com/invopop/jsonschema v0.9.0 // indirect
+	github.com/kr/pretty v0.3.1 // indirect
+	github.com/mailru/easyjson v0.7.7 // indirect
+	github.com/rogpeppe/go-internal v1.10.0 // indirect
+	github.com/wk8/go-ordered-map/v2 v2.1.8 // indirect
+	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
